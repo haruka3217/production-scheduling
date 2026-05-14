@@ -7,7 +7,7 @@
 本系统是一个**基于贪心调度策略的多约束排产引擎**，用于解决个人护理与卫生用品的快消制造业的**多产线、多班次、多SKU**的全年排产问题。
 
 系统输入：
-- 全年各月的**销售规划**（SKU、数量、规格）
+- 全年各月的**生产目标规划**（SKU、数量、规格）
 - 各产线的**产能数据**（速度、片数规格、品类能力）
 - **生产日历**（工作日/休息日）
 - **白名单**（强制指定SKU使用特定产线）
@@ -28,16 +28,16 @@
 ```
 ┌─────────────────────────────────────────────────────────────────┐
 │                        输入数据                                  │
-│  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐            │
-│  │ 销售规划 │  │ 产能数据 │ │ 生产日历 │  │ 白名单   │            │
-│  └────┬─────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘            │
+│  ┌─────────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐         │
+│  │ 生产目标规划 │  │ 产能数据 │ │ 生产日历 │  │ 白名单   │         │
+│  └────┬────────┘ └────┬─────┘ └────┬─────┘ └────┬─────┘         │
 │       └────────────┴────────────┴────────────┘                  │
 └─────────────────────────────────────────────────────────────────┘
                               │
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                   1. 数据加载与预处理                            │
-│  • load_plan_items()      	→ 加载销售规划，按(月份+SKU)汇总      │
+│  • load_plan_items()      	→ 加载生产目标规划，按(月份+SKU)汇总      │
 │  • load_capabilities()     	→ 加载产能，构建产线profile          │
 │  • load_calendar()         	 → 加载生产日历                      │
 │  • load_breakpoint_skus() 		→ 加载断点SKU，修改供应工厂         │
@@ -97,7 +97,7 @@
 
 | 函数 | 作用 |
 |---|---|
-| `load_plan_items(path)` | 读取销售规划Excel，按(月份+工厂+SKU+品类+规格)汇总规划数量 |
+| `load_plan_items(path)` | 读取生产目标规划Excel，按(月份+工厂+SKU+品类+规格)汇总规划数量 |
 | `load_capabilities(path)` | 读取产能表，构建每个产线的`LineProfile`（能力列表、计数器、min/max片数） |
 | `load_calendar(path)` | 读取生产日历，返回每天是否可开工 |
 | `load_breakpoint_skus(path)` | 读取断点SKU清单，返回{SKU: 指定工厂}映射 |
@@ -111,7 +111,7 @@
 
 | 类 | 字段 | 作用 |
 |---|---|---|
-| `PlanItem` | month, factory, sku, product_name, category, subcategory, spec_piece, planned_qty | 代表一个销售规划项 |
+| `PlanItem` | month, factory, sku, product_name, category, subcategory, spec_piece, planned_qty | 代表一个生产目标规划项 |
 | `CapabilityRow` | workshop, line_name, source, category, subcategory, piece_count, speed, shift_minutes | 代表一条产线的某项生产能力（如：3号线，片数10片，速度120） |
 | `LineProfile` | line_name, capability_rows, min_piece, max_piece, piece_counter, category_counter, subcategory_counter, combo_counter | 代表一条产线的完整档案（包含所有能力+历史偏好计数） |
 | `ShiftSlot` | shift_id, line_name, shift_date, shift_name, is_open_day, remaining_minutes, fragments | 代表一个班次槽位（如：5月5日3号线白班） |
