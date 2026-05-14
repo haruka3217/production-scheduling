@@ -37,9 +37,9 @@
                               ▼
 ┌─────────────────────────────────────────────────────────────────┐
 │                   1. 数据加载与预处理                            │
-│  • load_plan_items()   	→ 加载生产目标规划，按(月份+SKU)汇总      │
-│  • load_capabilities()   	 → 加载产能，构建产线profile          │
-│  • load_calendar()          → 加载生产日历                      │
+│  • load_plan_items()   	→ 加载生产目标规划，按(月份+SKU)汇总     │
+│  • load_capabilities()   	 → 加载产能，构建产线profile           │
+│  • load_calendar()          → 加载生产日历                       │
 │  • load_breakpoint_skus()  	→ 加载断点SKU，修改供应工厂         │
 │  • load_transfer_skus()     → 加载转移SKU，指定给重庆工厂         │
 │  • load_matching_overrides() → 加载白名单，注册额外能力           │
